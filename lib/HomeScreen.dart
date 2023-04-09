@@ -121,7 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               )
-                  : Center(child: CircularProgressIndicator()),
+                  : Center(child: CircularProgressIndicator(
+                color: Colors.deepOrange,
+              )),
             ),
             ),
           ],
