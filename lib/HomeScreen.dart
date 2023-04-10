@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:coin_list/WSConstants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'HttpRequest.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -12,15 +15,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<dynamic> _cryptos = [];
 
+
+
   Future<void> _loadCryptoData() async {
-    final response = await http.get(Uri.parse('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=30&page=1&sparkline=false'));
-    if (response.statusCode == 200) {
+    final response = await HttpRequestA(WSConstants.URL_BASE).get('coins/markets?vs_currency=usd&order=market_cap_desc&per_page=30&page=1&sparkline=false');
       setState(() {
-        _cryptos = jsonDecode(response.body);
+        _cryptos = response;
       });
-    } else {
-      throw Exception('Failed to load crypto data');
-    }
+
   }
 
   @override
@@ -76,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: Colors.orangeAccent,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: EdgeInsets.all(16),
@@ -121,9 +123,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               )
-                  : Center(child: CircularProgressIndicator(
+                  : Center(
+                  child: CircularProgressIndicator(
                 color: Colors.deepOrange,
-              )),
+              )
+              ),
             ),
             ),
           ],
@@ -132,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         backgroundColor: Colors.deepOrange ,
+        unselectedItemColor: Colors.black54,
         selectedItemColor: Colors.white,
         items: [
           BottomNavigationBarItem(
@@ -141,12 +146,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
-            label: 'Statistics',
+            label: 'Estáticas ',
             backgroundColor: Colors.deepOrange ,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: 'Search',
+            label: 'Pesquisa',
             backgroundColor: Colors.deepOrange ,
           ),
           BottomNavigationBarItem(
